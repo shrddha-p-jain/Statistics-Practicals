@@ -1,0 +1,42 @@
+first_letter = scan()
+15 20 14 13 18 16 13 12 18 11
+
+last_letter = scan()
+21 25 29 18 26 22 26 24 28 21
+
+no_letter = scan()
+28 30 32 28 26 30 25 36 20 25
+
+ex1 = data.frame (first_letter, last_letter, no_letter)
+
+ex1 #show structure
+
+final.ex1 = stack(ex1)#arrange data in one column
+
+names(final.ex1) = c("minutes", "letter.types")#give column title
+
+final.ex1
+
+#checking homogeneity of variance
+bartlett.test(minutes ~ letter.types, data = final.ex1)
+
+#Welch test for equal variance not assume
+oneway.test (minutes ~ letter.types, data = final.ex1)
+
+ex1.aov = aov(minutes ~ letter.types, data = final.ex1) 
+ex1.aov
+
+summary (ex1.aov)
+
+#show all figures in single window
+plot (ex1.aov,which = 1)
+plot (ex1.aov,which = 2)
+plot (ex1.aov,which = 3)
+plot (ex1.aov,which = 4)
+
+#show pairwise comparison
+TukeyHSD(ex1.aov)
+plot(TukeyHSD(ex1.aov))
+model.tables (ex1.aov, type = "means")
+boxplot(minutes ~ letter.types, data = final.ex1)
+title(xlab = "letter type", ylab = "minutes")
